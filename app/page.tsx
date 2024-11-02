@@ -116,6 +116,37 @@ public class Education {
 `,
   }
 
+
+  useEffect(() => {
+    // Hem Enter tuşuna hem de dokunma olaylarına yanıt veren fonksiyon
+    const handleContinue = () => {
+      setShowMainContent(true);
+    };
+
+    // Enter tuşuna basıldığında tetiklenen olay dinleyicisi
+    const handleKeyPress = (event) => {
+      if (event.key === 'Enter') {
+        handleContinue();
+      }
+    };
+
+    // Dokunma olayları (dokunma) için olay dinleyicisi
+    const handleTouchStart = () => {
+      handleContinue();
+    };
+
+    // Olay dinleyicilerini ekle
+    window.addEventListener('keydown', handleKeyPress);
+    window.addEventListener('touchstart', handleTouchStart);
+
+    // Temizleme: Bileşen kaldırıldığında olay dinleyicilerini kaldır
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+      window.removeEventListener('touchstart', handleTouchStart);
+    };
+  }, []); // Boş bağımlılık dizisi, bunun yalnızca bileşen bağlandığında bir kez çalışmasını sağlar
+
+
   // Show greeting message letter by letter
   useEffect(() => {
     let index = 0
@@ -133,21 +164,7 @@ public class Education {
     return () => clearInterval(interval)
   }, [])
 
-  // Show main content when Enter key is pressed
-  useEffect(() => {
-    const handleKeyPress = (event) => {
-      if (event.key === 'Enter') {
-        setShowMainContent(true);
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyPress);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyPress);
-    };
-  }, []);
-
+ 
   // Show content of the selected file
   useEffect(() => {
     if (showMainContent) {
