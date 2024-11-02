@@ -17,12 +17,16 @@ export default function Home() {
 
   const fileContents = {
     'about.js': `
-const aboutMe = {
-  name: "Murat Kale",
-  role: "Full Stack Developer",
-  description: "Passionate about creating efficient and scalable solutions for complex software systems.",
-  expertise: ["DDD", "TDD", "Microservices", "AI Integration"]
-};
+    const aboutMe = {
+      name: "Murat Kale",
+      role: "Full Stack Developer",
+      description: "Focused on building robust and scalable software solutions with a deep understanding of distributed architectures and performance optimization.",
+      expertise: [
+        "DotNet Core", "DDD", "TDD", "Microservices", "AI Integration",
+        "DevOps", "Distributed Architecture", "React", "Entity Framework Core"
+      ]
+    };
+    
 
 console.log(JSON.stringify(aboutMe, null, 2));
     `,
@@ -34,12 +38,23 @@ class Experience:
         self.period = period
         self.description = description
 
-experiences = [
-    Experience("Atlastek Teknoloji", "Full Stack Developer", "12.2023 - 09.2024", 
-               "Developed web-based CRM and IRP solutions"),
-    Experience("Hybrid", "Software Development Team Leader", "04.2019 - 12.2023", 
-               "Led integrations for banking and e-commerce systems")
+      experiences = [
+    Experience("Atlastek Teknoloji", "Full Stack Developer", "12.2023 - 09.2024",
+               "Developed web-based CRM and IRP solutions focusing on product tracking in fuel systems and payment systems."),
+    Experience("Hybrid", "Software Development Team Leader", "04.2019 - 12.2023",
+               "Led development of banking, payment, ERP, and CRM integrations with machine risk analysis and ISO standards."),
+    Experience("Işık Üniversitesi", "Software Development Team Leader", "05.2018 - 04.2019",
+               "Developed a student automation system and transitioned projects to .NET Core with API integrations."),
+    Experience("Demirören Medya", "Full Stack Developer", "10.2017 - 05.2018",
+               "Integrated Milliyet newspaper systems with various foreign services, using NoSQL databases and Redis."),
+    Experience("Spexco", "Full Stack Developer", "11.2016 - 10.2017",
+               "Developed election results, project tracking, and event management systems with reporting capabilities."),
+    Experience("Detur Group", "Full Stack Developer", "10.2014 - 11.2016",
+               "Built a reservation system for Scandinavian tourism markets with backend and frontend optimizations."),
+    Experience("DevTech", "Full Stack Developer", "01.2010 - 10.2014",
+               "Developed access control, bus route, and accounting systems with reporting features for managers."),
 ]
+
 
 for exp in experiences:
     print(f"{exp.role} at {exp.company} ({exp.period})\\n{exp.description}\\n")
@@ -50,11 +65,16 @@ for exp in experiences:
 #include <string>
 
 int main() {
-    std::vector<std::string> skills = {
-        "DDD", "TDD", "Microservices", "Docker", "RabbitMQ",
-        "DotNet Core", "Entity Framework", "React", "React Native",
-        "MongoDB", "PostgreSQL", "MSSQL", "AI Engineering"
-    };
+  std::vector<std::string> skills = {
+    "DDD", "TDD", "MediaTr", "Microservices", "Docker", "RabbitMQ", "DevOps",
+    "DotNet Core", "Entity Framework Core", "ElasticSearch", "Redis", "NHibernate", "Dapper", "Autofac",
+    "CQRS Pattern", "Repository Pattern", "MVC Pattern", "Strategy Pattern",
+    "MongoDB", "PostgreSQL", "MSSQL", "MySQL", "Oracle",
+    "React", "React Native",
+    "Refactoring", "Code Review", "Distributed Architecture", "Performance Tuning",
+    "AI Engineering", "Llama", "Gemini", "ChatGPT", "IDX", "Replit Agent", "V0", "Poe"
+};
+
 
     std::cout << "Skills:\\n";
     for (const auto& skill : skills) {
