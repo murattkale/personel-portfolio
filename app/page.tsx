@@ -122,7 +122,8 @@ public class Education {
   useEffect(() => {
     // Hem Enter tuşuna hem de dokunma olaylarına yanıt veren fonksiyon
     const handleContinue = () => {
-      if (userInput === "npm start") {
+      const lowercaseInput = userInput.toLowerCase();
+      if (lowercaseInput === "npm start") {
         // Check if user input matches
         setShowMainContent(true);
       } else {
