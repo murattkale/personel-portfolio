@@ -1,26 +1,29 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronRight, Folder, Terminal } from 'lucide-react'
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronRight, Folder, Terminal } from "lucide-react";
 
 export default function Home() {
-  const [activeFile, setActiveFile] = useState('about.js')
-  const [displayedText, setDisplayedText] = useState('')
-  const [showMainContent, setShowMainContent] = useState(false)
+  const [activeFile, setActiveFile] = useState("about.js");
+  const [displayedText, setDisplayedText] = useState("");
+  const [showMainContent, setShowMainContent] = useState(false);
+  const [userInput, setUserInput] = useState(""); // New state variable
 
-  const greetingText = "Would you like to get to know Murat Kale? (Press Enter)";
-  
+  const greetingText = decodeURI(
+    "Would you like to get to know Murat Kale? (Please type 'npm start' and press Enter.)",
+  );
+
   const files = [
-    { name: 'about.js', type: 'javascript' },
-    { name: 'experience.py', type: 'python' },
-    { name: 'skills.cpp', type: 'cpp' },
-    { name: 'education.java', type: 'java' },
-    { name: 'contact.html', type: 'html' },
-  ]
+    { name: "about.js", type: "javascript" },
+    { name: "experience.py", type: "python" },
+    { name: "skills.cpp", type: "cpp" },
+    { name: "education.java", type: "java" },
+    { name: "contact.html", type: "html" },
+  ];
 
   const fileContents = {
-    'about.js': `
+    "about.js": `
 const aboutMe = {
   name: "Murat Kale",
   role: "Full Stack Developer",
@@ -32,7 +35,7 @@ const aboutMe = {
 };
 console.log(JSON.stringify(aboutMe, null, 2));
 `,
-    'experience.py': `
+    "experience.py": `
 class Experience:
     def __init__(self, company, role, period, description):
         self.company = company
@@ -60,7 +63,7 @@ experiences = [
 for exp in experiences:
     print(f"{exp.role} at {exp.company} ({exp.period})\\n{exp.description}\\n")
 `,
-    'skills.cpp': `
+    "skills.cpp": `
 #include <iostream>
 #include <vector>
 #include <string>
@@ -80,7 +83,7 @@ int main() {
   return 0;
 }
 `,
-    'education.java': `
+    "education.java": `
 public class Education {
     public static void main(String[] args) {
         String[][] education = {
@@ -95,7 +98,7 @@ public class Education {
     }
 }
 `,
-    'contact.html': `
+    "contact.html": `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,18 +117,25 @@ public class Education {
 </body>
 </html>
 `,
-  }
-
+  };
 
   useEffect(() => {
     // Hem Enter tuşuna hem de dokunma olaylarına yanıt veren fonksiyon
     const handleContinue = () => {
-      setShowMainContent(true);
+      if (userInput === "npm start") {
+        // Check if user input matches
+        setShowMainContent(true);
+      } else {
+        setDisplayedText(
+          'Incorrect command. Please type "npm start" and press Enter.',
+        );
+        setUserInput(""); // Clear the input
+      }
     };
 
     // Enter tuşuna basıldığında tetiklenen olay dinleyicisi
     const handleKeyPress = (event) => {
-      if (event.key === 'Enter') {
+      if (event.key === "Enter") {
         handleContinue();
       }
     };
@@ -136,56 +146,53 @@ public class Education {
     };
 
     // Olay dinleyicilerini ekle
-    window.addEventListener('keydown', handleKeyPress);
-    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener("keydown", handleKeyPress);
+    window.addEventListener("touchstart", handleTouchStart);
 
     // Temizleme: Bileşen kaldırıldığında olay dinleyicilerini kaldır
     return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener("keydown", handleKeyPress);
+      window.removeEventListener("touchstart", handleTouchStart);
     };
-  }, []); // Boş bağımlılık dizisi, bunun yalnızca bileşen bağlandığında bir kez çalışmasını sağlar
-
+  }, [userInput]); // Add userInput to the dependency array
 
   // Show greeting message letter by letter
   useEffect(() => {
-    let index = 0
-    setDisplayedText('')
-    
+    let index = 0;
+    setDisplayedText("");
+
     const interval = setInterval(() => {
-      if (index < greetingText.length-1) {
-        setDisplayedText((prev) => prev + greetingText[index])
-        index++
+      if (index < greetingText.length - 1) {
+        setDisplayedText((prev) => prev + greetingText[index]);
+        index++;
       } else {
-        clearInterval(interval)
+        clearInterval(interval);
       }
-    }, 30) // Letter display speed
+    }, 30); // Letter display speed
 
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearInterval(interval);
+  }, []);
 
- 
   // Show content of the selected file
   useEffect(() => {
     if (showMainContent) {
-      let index = 0
-      setDisplayedText('')
-      const content = fileContents[activeFile]
+      let index = 0;
+      setDisplayedText("");
+      const content = fileContents[activeFile];
 
       const interval = setInterval(() => {
-        if (index < content.length-1) {
-          setDisplayedText((prev) => prev + content[index])
-          index++
+        if (index < content.length - 1) {
+          setDisplayedText((prev) => prev + content[index]);
+          index++;
         } else {
-          clearInterval(interval)
+          clearInterval(interval);
         }
-      }, 1)
+      }, 1);
 
-      return () => clearInterval(interval)
+      return () => clearInterval(interval);
     }
-  }, [activeFile, showMainContent])
+  }, [activeFile, showMainContent]);
 
-  
   return (
     <div className={`min-h-screen text-green-400 p-8 font-mono bg-black`}>
       {!showMainContent ? (
@@ -200,6 +207,13 @@ public class Education {
               <Terminal className="inline-block" />
               <span className="ml-2">{displayedText}</span>
             </div>
+            <input
+              type="text"
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              className="bg-gray-900 border border-green-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+              placeholder="Enter command..."
+            />
           </motion.div>
         </div>
       ) : (
@@ -210,7 +224,9 @@ public class Education {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h1 className="text-5xl font-bold mb-2 text-green-400 glow-effect">Murat Kale</h1>
+            <h1 className="text-5xl font-bold mb-2 text-green-400 glow-effect">
+              Murat Kale
+            </h1>
             <h2 className="text-2xl text-green-600">Full Stack Developer</h2>
           </motion.div>
 
@@ -221,7 +237,11 @@ public class Education {
               </h3>
               <ul className="space-y-2">
                 {files.map((file) => (
-                  <motion.li key={file.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.li
+                    key={file.name}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <button
                       onClick={() => setActiveFile(file.name)}
                       className="text-left text-green-500 hover:underline"
@@ -234,7 +254,9 @@ public class Education {
             </div>
 
             <div className="lg:w-3/4">
-              <h3 className="text-lg font-semibold mb-4 text-green-400">File Content:</h3>
+              <h3 className="text-lg font-semibold mb-4 text-green-400">
+                File Content:
+              </h3>
               <div className="border border-green-500 rounded-lg p-4 overflow-auto neomorphic">
                 <AnimatePresence>
                   <motion.pre
@@ -256,26 +278,30 @@ public class Education {
 
       <style jsx>{`
         .glow-effect {
-          text-shadow: 0 0 10px rgba(0, 255, 0, 0.7), 0 0 20px rgba(0, 255, 0, 0.7);
+          text-shadow:
+            0 0 10px rgba(0, 255, 0, 0.7),
+            0 0 20px rgba(0, 255, 0, 0.7);
         }
         .neon-text {
           color: #00ff00;
-          text-shadow: 0 0 10px rgba(0, 255, 0, 0.8), 0 0 20px rgba(0, 255, 0, 0.8);
+          text-shadow:
+            0 0 10px rgba(0, 255, 0, 0.8),
+            0 0 20px rgba(0, 255, 0, 0.8);
         }
         .neomorphic {
           background: #1c1c1c; /* Arka plan rengi */
           border-radius: 15px;
-          box-shadow: 
+          box-shadow:
             8px 8px 15px rgba(0, 0, 0, 0.4),
             -8px -8px 15px rgba(255, 255, 255, 0.1);
           transition: box-shadow 0.3s ease;
         }
         .neomorphic:hover {
-          box-shadow: 
+          box-shadow:
             5px 5px 20px rgba(0, 0, 0, 0.5),
             -5px -5px 20px rgba(255, 255, 255, 0.2);
         }
       `}</style>
     </div>
-  )
+  );
 }
